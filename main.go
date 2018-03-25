@@ -2,12 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	_ "log"
 	"net/http"
-	"os"
+	_ "os"
 	"strings"
 
-	"github.com/gin-gonic/gin"
+	_ "github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
