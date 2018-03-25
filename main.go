@@ -2,12 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"os"
 	"strings"
 
 	_ "github.com/gin-gonic/gin"
+	"github.com/go-kit/kit/log"
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
@@ -35,6 +35,8 @@ func query(city string) (weatherData, error) {
 }
 
 func main() {
+
+	logger := log.NewLogfmtLogger(os.Stdout)
 
 	port := os.Getenv("PORT")
 	if port == "" {
