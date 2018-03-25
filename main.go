@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	_ "github.com/gin-gonic/gin"
-	_ "github.com/go-kit/kit/log"
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
