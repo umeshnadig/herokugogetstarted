@@ -2,12 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 
 	_ "github.com/gin-gonic/gin"
-	"github.com/go-kit/kit/log"
+	_ "github.com/go-kit/kit/log"
 	_ "github.com/heroku/x/hmetrics/onload"
 )
 
@@ -36,7 +37,7 @@ func query(city string) (weatherData, error) {
 
 func main() {
 
-	logger := log.NewLogfmtLogger(os.Stdout)
+	logger := log.New(os.Stdout, "Info----", 1)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -58,9 +59,9 @@ func main() {
 		json.NewEncoder(w).Encode(data)
 	})
 
-	logger.Log("listening-on", port)
+	logger.Println("listening-on", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		logger.Log("listen.error", err)
+		logger.Println("listen.error", err)
 	}
 }
 
