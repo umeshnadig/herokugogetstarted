@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
@@ -34,20 +35,24 @@ func query(city string) (weatherData, error) {
 }
 
 func main() {
-	port := os.Getenv("PORT")
+	http.HandleFunc("/hello", hello)
 
-	if port == "" {
-		log.Fatal("$PORT must be set")
-	}
+	http.HandleFunc("/weather/", func(w http.ResponseWriter, r *http.Request) {
+		city := strings.SplitN(r.URL.Path, "/", 3)[2]
 
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.LoadHTMLGlob("templates/*.tmpl.html")
-	router.Static("/static", "static")
+		data, err := query(city)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		json.NewEncoder(w).Encode(data)
 	})
 
-	router.Run(":" + port)
+	http.ListenAndServe(":8080", nil)
+}
+
+func hello(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("hello!"))
 }
