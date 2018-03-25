@@ -35,6 +35,12 @@ func query(city string) (weatherData, error) {
 }
 
 func main() {
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	http.HandleFunc("/hello", hello)
 
 	http.HandleFunc("/weather/", func(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +56,10 @@ func main() {
 		json.NewEncoder(w).Encode(data)
 	})
 
-	http.ListenAndServe(":8080", nil)
+	logger.Log("listening-on", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		logger.Log("listen.error", err)
+	}
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
