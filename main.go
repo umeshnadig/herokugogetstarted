@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	_ "log"
+	"log"
 	"net/http"
-	_ "os"
+	"os"
 	"strings"
 
 	_ "github.com/gin-gonic/gin"
