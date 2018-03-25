@@ -36,8 +36,6 @@ func query(city string) (weatherData, error) {
 
 func main() {
 
-	logger := log.New(os.Stdout, "Info----", 1)
-
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -58,9 +56,9 @@ func main() {
 		json.NewEncoder(w).Encode(data)
 	})
 
-	logger.Println("listening-on", port)
+	log.Println("listening-on", port)
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		logger.Println("listen.error", err)
+		log.Println("listen.error", err)
 	}
 }
 
